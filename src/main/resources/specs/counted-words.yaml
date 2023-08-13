@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info:
+  title: Counted Words API
+  description: API for retrieving counted words data
+  version: 1.0.0
+
+paths:
+  /counted-words/{probeId}:
+    get:
+      summary: Get counted words by probe ID
+      operationId: getCountedWordsByProbeId
+      parameters:
+        - name: probeId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The ID of the probe
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountedWords'
+        '403':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '404':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '500':
+          $ref: "commons.yaml#/components/responses/ServerError"
+
+  /counted-words:
+    get:
+      summary: Get all counted words
+      operationId: getAllCountedWords
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CountedWords'
+        '401':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '500':
+          $ref: "commons.yaml#/components/responses/ServerError"
+
+components:
+  schemas:
+    CountedWords:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The unique ID of the counted words data
+        timestamp:
+          type: string
+          format: date-time
+          description: The timestamp of when the data was collected
+        letters_count:
+          type: integer
+          format: int64
+          description: The count of letters in the data

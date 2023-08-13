@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: Api
+  description: Api
+  version: 1.0.0
+
+tags:
+  - name: counted_words
+
+paths:
+  /counted-words:
+    $ref: 'specs/counted-words.yaml#/paths/~1counted-words'
+  /counted-words/{probeId}:
+    $ref: 'specs/counted-words.yaml#/paths/~1counted-words~1%7BprobeId%7D'
