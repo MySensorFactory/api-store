@@ -4,7 +4,7 @@ env:
     variables:
         PROJECT_NAME: api-store
         DOCKER_BUILD: no
-        BUILD_TYPE: empty
+        BUILD_TYPE: lib
 
 phases: 
     install:
