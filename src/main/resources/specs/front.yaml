@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: Front
+  description: Front
+  version: 1.0.0
+servers:
+  - url: 'https'
+
+paths:
+  /login:
+    post:
+      summary: Get login token
+      tags:
+        - front
+      operationId: login
+      parameters:
+        - name: Auth-Data
+          in: header
+          required: true
+          description: Credentials with the following format username:password encoded by base64
+          schema:
+            type: string
+            format: base64
+      responses:
+        '200':
+          description: Successfully acquired login token
+        '401':
+          $ref: "commons.yaml#/components/responses/ClientError"
+  /login/refresh:
+    post:
+      summary: Refresh
+      tags:
+        - front
+      operationId: refresh
+      parameters:
+        - name: Refresh-Token
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully refreshed access token
+        '401':
+          $ref: "commons.yaml#/components/responses/ClientError"

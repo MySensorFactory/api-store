@@ -29,7 +29,7 @@ components:
         code:
           type: string
           enum:
-            - ENTITY_EXISTS
+            - ALREADY_EXISTS
             - ENTITY_RELATION_DOES_NOT_EXIST
             - CANNOT_BIND_THIS_ENTITY_TO_ANOTHER_ENTITY
             - CANNOT_DELETE_ENTITY_DUE_TO_EXISTING_REFERENCE
@@ -37,5 +37,19 @@ components:
             - NOT_FOUND
             - FORBIDDEN
             - INTERNAL_SERVER_ERROR
+            - INVALID_INPUT
+            - INACTIVE
         description:
           type: string
+
+    TimeRange:
+      type: object
+      properties:
+        from:
+          type: integer
+          format: int64
+          description: From timestamp
+        to:
+          type: integer
+          format: int64
+          description: To timestamp

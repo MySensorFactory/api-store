@@ -5,10 +5,26 @@ info:
   version: 1.0.0
 
 tags:
-  - name: counted_words
+  - name: reports
+  - name: front
+  - name: users
 
 paths:
-  /counted-words:
-    $ref: 'specs/counted-words.yaml#/paths/~1counted-words'
-  /counted-words/{probeId}:
-    $ref: 'specs/counted-words.yaml#/paths/~1counted-words~1%7BprobeId%7D'
+  /users:
+    $ref: 'specs/users.yaml#/paths/~1users'
+  /users/{userName}:
+    $ref: 'specs/users.yaml#/paths/~1users~1%7BuserName%7D'
+  /users/{userName}/activate:
+    $ref: 'specs/users.yaml#/paths/~1users~1%7BuserName%7D~1activate'
+  /roles:
+    $ref: 'specs/users.yaml#/paths/~1roles'
+  /login:
+    $ref: 'specs/front.yaml#/paths/~1login'
+  /login/refresh:
+    $ref: 'specs/front.yaml#/paths/~1login~1refresh'
+  /reports:
+    $ref: 'specs/reports.yaml#/paths/~1reports'
+  /reports/{id}:
+    $ref: 'specs/reports.yaml#/paths/~1reports~1%7Bid%7D'
+  /reports/{sensorType}/{label}:
+    $ref: 'specs/reports.yaml#/paths/~1reports~1%7BsensorType%7D~1%7Blabel%7D'

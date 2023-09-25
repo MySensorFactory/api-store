@@ -1,0 +1,220 @@
+openapi: 3.0.1
+info:
+  title: User Management API
+  description: API for creating and updating user profiles
+  version: 1.0.0
+servers:
+  - url: 'https://api.example.com'
+
+tags:
+  - name: users
+    description: Operations related to users
+
+paths:
+  /users:
+    post:
+      summary: Create a new user
+      tags:
+        - users
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          $ref: "commons.yaml#/components/responses/ClientError"
+
+  /users/{userName}:
+    get:
+      summary: Get user details
+      tags:
+        - users
+      operationId: getUserDetails
+      parameters:
+        - name: userName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The username of the user to get details for
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '404':
+          $ref: "commons.yaml#/components/responses/ClientError"
+
+    patch:
+      summary: Update user information
+      tags:
+        - users
+      operationId: updateUser
+      parameters:
+        - name: userName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The user name of the user to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchUserRequest'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '404':
+          $ref: "commons.yaml#/components/responses/ClientError"
+
+  /users/{userName}/activate:
+    post:
+      summary: Activate user
+      tags:
+        - users
+      operationId: activateUser
+      parameters:
+        - name: userName
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The username of the user to activate for
+      responses:
+        '200':
+          description: Successful response
+        '400':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '404':
+          $ref: "commons.yaml#/components/responses/ClientError"
+
+  /roles:
+    post:
+      summary: Create a new role
+      tags:
+        - users
+      operationId: createRole
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoleRequest'
+      responses:
+        '201':
+          description: Role created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleResponse'
+        '400':
+          $ref: "commons.yaml#/components/responses/ClientError"
+
+    get:
+      summary: Get all roles
+      tags:
+        - users
+      operationId: getAllRoles
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoleResponse'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        password:
+          type: string
+        email:
+          type: string
+          format: email
+        enabled:
+          type: boolean
+        username:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+
+    UserResponse:
+      allOf:
+        - $ref: '#/components/schemas/User'
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      required:
+        - id
+        - username
+        - enabled
+        - email
+        - password
+
+    CreateUserRequest:
+      allOf:
+        - $ref: '#/components/schemas/User'
+      type: object
+      required:
+        - username
+        - email
+        - password
+
+    PatchUserRequest:
+      allOf:
+        - $ref: '#/components/schemas/User'
+      type: object
+
+    Role:
+      type: object
+      properties:
+        name:
+          type: string
+
+    CreateRoleRequest:
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      type: object
+      required:
+        - name
+
+    RoleResponse:
+      allOf:
+        - $ref: '#/components/schemas/Role'
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      required:
+        - id
+        - name

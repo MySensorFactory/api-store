@@ -1,0 +1,208 @@
+openapi: 3.0.3
+info:
+  title: Reports API
+  description: API for creating and retrieving reports
+  version: 1.0.0
+
+paths:
+  /reports:
+    post:
+      summary: Creates report with given time window and other parameters
+      operationId: createReport
+      tags:
+        - reports
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReportRequest'
+      responses:
+        '200':
+          description: Successfully created report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReportResponse'
+        '403':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '500':
+          $ref: "commons.yaml#/components/responses/ServerError"
+    get:
+      operationId: getReportsList
+      tags:
+        - reports
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReportListResponse'
+        '403':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '500':
+          $ref: "commons.yaml#/components/responses/ServerError"
+
+  /reports/{id}:
+    get:
+      operationId: getReportDetails
+      tags:
+        - reports
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReportDetailsResponse'
+        '403':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '500':
+          $ref: "commons.yaml#/components/responses/ServerError"
+
+  /reports/{sensorType}/{label}:
+    get:
+      operationId: getSingleReports
+      description: Pulls sensor data from given label and time window
+      tags:
+        - reports
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: label
+          in: path
+          schema:
+            type: string
+        - name: sensorType
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSingleReportResponse'
+        '403':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '500':
+          $ref: "commons.yaml#/components/responses/ServerError"
+
+components:
+  schemas:
+    CreateReportRequest:
+      type: object
+      properties:
+        timeRange:
+          $ref: 'commons.yaml#/components/schemas/TimeRange'
+        sensorLabels:
+          type: object
+          additionalProperties:
+            type: string
+        label:
+          type: string
+
+    CreateReportResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+
+    GetReportListResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportPreview'
+
+    GetSingleReportResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SensorData'
+
+    ReportPreview:
+      type: object
+      properties:
+        timeRange:
+          $ref: 'commons.yaml#/components/schemas/TimeRange'
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
+
+    GetReportDetailsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        timeRange:
+          $ref: 'commons.yaml#/components/schemas/TimeRange'
+        dataBySensorType:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/InstantData'
+
+    InstantData:
+      type: object
+      properties:
+        dataByEventKey:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/SensorData'
+
+    SensorData:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+        label:
+          type: string
+        eventKey:
+          type: string
+          format: uuid
+        sensorType:
+          type: string
+        values:
+          type: object
+          additionalProperties:
+            type: number
