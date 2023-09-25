@@ -75,6 +75,10 @@
             <artifactId>jackson-core</artifactId>
             <version>${jackson.core.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
     </dependencies>
 
     <name>api-store</name>
@@ -104,6 +108,7 @@
                             <templateDirectory>${project.basedir}/src/main/resources/template</templateDirectory>
                             <configOptions>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
+                                <additionalModelTypeAnnotations>@lombok.Builder @javax.validation.Valid @lombok.NoArgsConstructor @lombok.AllArgsConstructor</additionalModelTypeAnnotations>
                                 <delegatePattern>true</delegatePattern>
                                 <interfaceOnly>true</interfaceOnly>
                                 <generateForOpenFeign>true</generateForOpenFeign>
