@@ -2,8 +2,8 @@ version: 0.2
 
 env:
     variables:
-        PROJECT_NAME: kafka-data-processor
-        DOCKER_BUILD: yes
+        PROJECT_NAME: api-store
+        DOCKER_BUILD: no
         BUILD_TYPE: empty
 
 phases: 
