@@ -18,10 +18,6 @@ paths:
     $ref: 'specs/users.yaml#/paths/~1users~1%7BuserName%7D~1activate'
   /roles:
     $ref: 'specs/users.yaml#/paths/~1roles'
-  /login:
-    $ref: 'specs/front.yaml#/paths/~1login'
-  /login/refresh:
-    $ref: 'specs/front.yaml#/paths/~1login~1refresh'
   /reports:
     $ref: 'specs/reports.yaml#/paths/~1reports'
   /reports/{id}:

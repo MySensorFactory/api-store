@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: Reactive Api
+  description: Reactive Api
+  version: 1.0.0
+
+tags:
+  - name: front
+
+paths:
+  /login:
+    $ref: 'specs/front.yaml#/paths/~1login'
+  /login/refresh:
+    $ref: 'specs/front.yaml#/paths/~1login~1refresh'
