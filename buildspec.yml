@@ -31,7 +31,8 @@ phases:
             - if [ "$DOCKER_BUILD" = "yes" ]; then bash functions/mvn_build.sh ;fi
     post_build:
         commands:
-            - if [ "$DOCKER_BUILD" = "yes" ]; then bash functions/deploy.sh ;fi
+            - echo "Publishing to artifact repository ..."
+            - mvn -s settings.xml deploy
 cache:
     paths:
         - '/root/.m2/**/*'
