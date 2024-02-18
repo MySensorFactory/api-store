@@ -40,19 +40,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SearchReportsRequest'
-      parameters:
-        - name: from
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: to
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
       responses:
         '200':
           description: Successful response
@@ -185,12 +172,27 @@ components:
     Filter:
       type: object
       properties:
-        query:
+        textQuery:
+          description: This query is applied for each text field
           type: string
-        searchFields:
+        keywords:
+          type: object
+          description: Keyword queries. Corresponding keyword queries are mapped to keyword names.
+          additionalProperties:
+            type: string
+        textFields:
           type: array
           items:
             type: string
+        from:
+          type: integer
+          format: int64
+        to:
+          type: integer
+          format: int64
+      required:
+        - textFields
+        - keywords
 
     SearchReportsRequest:
       type: object
