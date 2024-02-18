@@ -15,6 +15,10 @@
         <buildType>empty</buildType>
     </properties>
 
+    <name>api-store</name>
+    <artifactId>${project.name}</artifactId>
+    <version>1.0.0</version>
+
     <dependencies>
         <dependency>
             <groupId>com.squareup.okio</groupId>
@@ -87,9 +91,6 @@
         </dependency>
     </dependencies>
 
-    <name>api-store</name>
-    <artifactId>${project.name}</artifactId>
-    <version>1.0.0</version>
 
 
     <build>

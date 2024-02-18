@@ -23,3 +23,5 @@ paths:
     $ref: 'specs/reports.yaml#/paths/~1reports~1%7Bid%7D'
   /reports/{sensorType}/{label}:
     $ref: 'specs/reports.yaml#/paths/~1reports~1%7BsensorType%7D~1%7Blabel%7D'
+  /reports/search:
+    $ref: 'specs/reports.yaml#/paths/~1reports~1search'

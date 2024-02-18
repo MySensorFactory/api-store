@@ -28,10 +28,18 @@ paths:
           $ref: "commons.yaml#/components/responses/ClientError"
         '500':
           $ref: "commons.yaml#/components/responses/ServerError"
-    get:
-      operationId: getReportsList
+
+  /reports/search:
+    post:
+      operationId: searchReports
       tags:
         - reports
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchReportsRequest'
       parameters:
         - name: from
           in: query
@@ -81,6 +89,48 @@ paths:
         '500':
           $ref: "commons.yaml#/components/responses/ServerError"
 
+    patch:
+      operationId: updateReport
+      tags:
+        - reports
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReportRequest'
+        '403':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '500':
+          $ref: "commons.yaml#/components/responses/ServerError"
+
+    delete:
+      operationId: deleteReport
+      tags:
+        - reports
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Successful response
+        '403':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '500':
+          $ref: "commons.yaml#/components/responses/ServerError"
+
   /reports/{sensorType}/{label}:
     get:
       operationId: getSingleReports
@@ -122,6 +172,41 @@ paths:
 
 components:
   schemas:
+    Sorting:
+      type: object
+      properties:
+        order:
+          enum:
+            - asc
+            - desc
+        name:
+          type: string
+
+    Filter:
+      type: object
+      properties:
+        query:
+          type: string
+        searchFields:
+          type: array
+          items:
+            type: string
+
+    SearchReportsRequest:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+        page:
+          type: integer
+        sorting:
+          type: array
+          description: By default uses sorting by score
+          items:
+            $ref: "#/components/schemas/Sorting"
+        filter:
+          $ref: "#/components/schemas/Filter"
+
     CreateReportRequest:
       type: object
       properties:
@@ -132,6 +217,10 @@ components:
           additionalProperties:
             type: string
         label:
+          type: string
+        name:
+          type: string
+        description:
           type: string
 
     CreateReportResponse:
