@@ -16,14 +16,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateReportRequest'
+              $ref: '#/components/schemas/UpsertReportRequest'
       responses:
         '200':
           description: Successfully created report
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateReportResponse'
+                $ref: '#/components/schemas/UpsertReportResponse'
         '403':
           $ref: "commons.yaml#/components/responses/ClientError"
         '500':
@@ -87,13 +87,19 @@ paths:
           schema:
             type: string
             format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertReportRequest'
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateReportRequest'
+                $ref: '#/components/schemas/UpsertReportResponse'
         '403':
           $ref: "commons.yaml#/components/responses/ClientError"
         '500':
@@ -209,7 +215,7 @@ components:
         filter:
           $ref: "#/components/schemas/Filter"
 
-    CreateReportRequest:
+    UpsertReportRequest:
       type: object
       properties:
         timeRange:
@@ -224,8 +230,13 @@ components:
           type: string
         description:
           type: string
+      required:
+        - sensorLabels
+        - label
+        - name
+        - description
 
-    CreateReportResponse:
+    UpsertReportResponse:
       type: object
       properties:
         id:

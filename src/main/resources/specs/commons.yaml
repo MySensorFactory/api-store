@@ -53,3 +53,6 @@ components:
           type: integer
           format: int64
           description: To timestamp
+      required:
+        - from
+        - to
