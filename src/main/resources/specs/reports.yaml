@@ -276,6 +276,10 @@ components:
         id:
           type: string
           format: uuid
+        name:
+          type: string
+        description:
+          type: string
         timeRange:
           $ref: 'commons.yaml#/components/schemas/TimeRange'
         dataBySensorType:
