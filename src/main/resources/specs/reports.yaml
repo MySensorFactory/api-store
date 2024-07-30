@@ -71,6 +71,64 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetReportDetailsResponse'
+              example: {
+                "id": "00000000-0000-0000-0000-000000000000",
+                "description": "Test report",
+                "timeRange": {
+                  "from": 1588888888888,
+                  "to": 1588888889999
+                },
+                "dataBySensorType": {
+                  "temperature": {
+                    "d36f3300-eae7-471e-abf2-b2f71fa58652": {
+                      "timestamp": 1588888888888,
+                      "label": "afterCompressor",
+                      "eventKey": "d36f3300-eae7-471e-abf2-b2f71fa58652",
+                      "sensorType": "temperature",
+                      "values": {
+                        "value": 20.0
+                      }
+                    },
+                    "0590d86b-da41-4c4f-bbfd-daaf95e5a752": {
+                      "timestamp": 1588888888889,
+                      "label": "afterCompressor",
+                      "eventKey": "0590d86b-da41-4c4f-bbfd-daaf95e5a752",
+                      "sensorType": "temperature",
+                      "values": {
+                        "value": 20.1
+                      }
+                    }
+                  },
+                  "flowRate": {
+                    "d36f3300-eae7-471e-abf2-b2f71fa58652": {
+                      "timestamp": 1588888888888,
+                      "label": "afterCompressor",
+                      "eventKey": "d36f3300-eae7-471e-abf2-b2f71fa58652",
+                      "sensorType": "flowRate",
+                      "values": {
+                        "CO2": 0.2,
+                        "NH3": 0.2,
+                        "N3": 0.2,
+                        "H2": 0.2,
+                        "O2": 0.2
+                      }
+                    },
+                    "0590d86b-da41-4c4f-bbfd-daaf95e5a752": {
+                      "timestamp": 1588888888889,
+                      "label": "afterCompressor",
+                      "eventKey": "0590d86b-da41-4c4f-bbfd-daaf95e5a752",
+                      "sensorType": "flowRate",
+                      "values": {
+                        "CO2": 0.2,
+                        "NH3": 0.2,
+                        "N3": 0.2,
+                        "H2": 0.2,
+                        "O2": 0.2
+                      }
+                    }
+                  }
+                }
+              }
         '403':
           $ref: "commons.yaml#/components/responses/ClientError"
         '500':
