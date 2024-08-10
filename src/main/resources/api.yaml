@@ -7,6 +7,7 @@ info:
 tags:
   - name: reports
   - name: users
+  - name: home
 
 paths:
   /users:
@@ -25,3 +26,14 @@ paths:
     $ref: 'specs/reports.yaml#/paths/~1reports~1%7BsensorType%7D~1%7Blabel%7D'
   /reports/search:
     $ref: 'specs/reports.yaml#/paths/~1reports~1search'
+
+  /home/events:
+    $ref: 'specs/home.yaml#/paths/~1home~1events'
+  /home/sensor-values/{dashboardConfigId}:
+    $ref: 'specs/home.yaml#/paths/~1home~1sensor-values~1%7BdashboardConfigId%7D'
+  /home/average-sensor-values/{dashboardConfigId}:
+    $ref: 'specs/home.yaml#/paths/~1home~1average-sensor-values~1%7BdashboardConfigId%7D'
+  /home/chart-data:
+    $ref: 'specs/home.yaml#/paths/~1home~1chart-data'
+  /home/dashboard-config/{id}:
+    $ref: 'specs/home.yaml#/paths/~1home~1dashboard-config~1%7Bid%7D'

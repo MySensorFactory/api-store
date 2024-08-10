@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: Factory Data Analytics API
+  version: 1.0.0
+paths:
+  /home/dashboard-config/{id}:
+    get:
+      summary: Get dashboard configuration
+      operationId: getDashboardConfig
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - home
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardConfig'
+    put:
+      summary: Update dashboard configuration
+      operationId: updateDashboardConfig
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - home
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardConfig'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardConfig'
+
+  /home/events:
+    get:
+      summary: Get events and alerts
+      operationId: getHomeEvents
+      tags:
+        - home
+      parameters:
+        - in: query
+          name: showOnlyAlerts
+          schema:
+            type: boolean
+        - in: query
+          name: searchTerm
+          schema:
+            type: string
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+
+  /home/sensor-values/{dashboardConfigId}:
+    get:
+      summary: Get current sensor values
+      operationId: getHomeSensorValues
+      parameters:
+        - in: path
+          name: dashboardConfigId
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - home
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SensorValue'
+
+  /home/average-sensor-values/{dashboardConfigId}:
+    get:
+      summary: Get average sensor values
+      operationId: getHomeAverageSensorValues
+      parameters:
+        - in: path
+          name: dashboardConfigId
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - home
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SensorValue'
+
+  /home/chart-data:
+    get:
+      summary: Get chart data
+      operationId: getHomeChartData
+      tags:
+        - home
+      parameters:
+        - in: query
+          name: sensorType
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: timeRange
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChartDataPoint'
+
+components:
+  schemas:
+    DashboardConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        currentSensorValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/SensorValue'
+        averageSensorValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/SensorValue'
+        chartConfigs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChartConfig'
+
+    Event:
+      type: object
+      properties:
+        title:
+          type: string
+        time:
+          type: string
+          format: date-time
+        isAlert:
+          type: boolean
+
+    SensorValue:
+      type: object
+      properties:
+        label:
+          type: string
+        value:
+          type: string
+
+    ChartDataPoint:
+      type: object
+      properties:
+        time:
+          type: number
+        value:
+          type: number
+
+    ChartConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        sensorType:
+          type: string
+        minDomain:
+          type: number
+        maxDomain:
+          type: number
+        unit:
+          type: string
