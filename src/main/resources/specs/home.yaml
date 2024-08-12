@@ -161,14 +161,14 @@ components:
         id:
           type: string
           format: uuid
-        currentSensorValues:
+        currentSensorValuesConfig:
           type: array
           items:
-            $ref: '#/components/schemas/SensorValue'
-        averageSensorValues:
+            $ref: '#/components/schemas/ValueConfig'
+        averageSensorValuesConfig:
           type: array
           items:
-            $ref: '#/components/schemas/SensorValue'
+            $ref: '#/components/schemas/ValueConfig'
         chartConfigs:
           type: array
           items:
@@ -186,10 +186,10 @@ components:
           type: boolean
 
     SensorValue:
+      allOf:
+        - $ref: '#/components/schemas/ValueConfig'
       type: object
       properties:
-        label:
-          type: string
         value:
           type: string
 
@@ -207,13 +207,18 @@ components:
         id:
           type: string
           format: uuid
-        title:
+        label:
           type: string
         sensorType:
           type: string
-        minDomain:
-          type: number
-        maxDomain:
-          type: number
-        unit:
+
+    ValueConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
+        sensorType:
           type: string
