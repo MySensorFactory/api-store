@@ -6,8 +6,6 @@ info:
 servers:
   - url: 'https'
 
-paths:
-
 components:
   responses:
     ClientError:
@@ -56,3 +54,14 @@ components:
       required:
         - from
         - to
+
+    SensorData:
+      type: object
+      properties:
+        timestamp:
+          type: integer
+          format: int64
+        values:
+          type: object
+          additionalProperties:
+            type: number

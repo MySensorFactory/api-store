@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  title: Api
+  description: Api
+  version: 1.0.0
+
+tags:
+  - name: reports
+  - name: users
+  - name: home
+
+paths:
+  /users:
+    $ref: 'users.yaml#/paths/~1users'
+  /users/{userName}:
+    $ref: 'users.yaml#/paths/~1users~1%7BuserName%7D'
+  /users/{userName}/activate:
+    $ref: 'users.yaml#/paths/~1users~1%7BuserName%7D~1activate'
+  /roles:
+    $ref: 'users.yaml#/paths/~1roles'
+  /reports:
+    $ref: 'reports.yaml#/paths/~1reports'
+  /reports/{id}:
+    $ref: 'reports.yaml#/paths/~1reports~1%7Bid%7D'
+  /reports/search:
+    $ref: 'reports.yaml#/paths/~1reports~1search'
+
+  /home/events:
+    $ref: 'home.yaml#/paths/~1home~1events'
+  /home/sensor-values/{userName}:
+    $ref: 'home.yaml#/paths/~1home~1sensor-values~1%7BuserName%7D'
+  /home/average-sensor-values/{userName}:
+    $ref: 'home.yaml#/paths/~1home~1average-sensor-values~1%7BuserName%7D'
+  /home/chart-data:
+    $ref: 'home.yaml#/paths/~1home~1chart-data'
+  /home/dashboard-config/{userName}:
+    $ref: 'home.yaml#/paths/~1home~1dashboard-config~1%7BuserName%7D'
+
+  /config:
+    $ref: 'config.yaml#/paths/~1config'

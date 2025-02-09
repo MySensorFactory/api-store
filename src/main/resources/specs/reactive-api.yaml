@@ -9,6 +9,6 @@ tags:
 
 paths:
   /login:
-    $ref: 'specs/front.yaml#/paths/~1login'
+    $ref: 'front.yaml#/paths/~1login'
   /login/refresh:
-    $ref: 'specs/front.yaml#/paths/~1login~1refresh'
+    $ref: 'front.yaml#/paths/~1login~1refresh'
