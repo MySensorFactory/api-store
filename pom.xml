@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.factory</groupId>
         <artifactId>factory-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <relativePath/>
     </parent>
 
@@ -31,11 +31,6 @@
             <version>${okhttp.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>${javax.annotation-api.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable.version}</version>
@@ -49,16 +44,6 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox-swagger-ui.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet-api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${validation-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -80,6 +65,10 @@
             <version>${jackson.core.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>compile</scope>
@@ -90,7 +79,6 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
 
 
     <build>
@@ -106,7 +94,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/specs/api.yaml</inputSpec>
                             <generatorName>spring</generatorName>
                             <library>spring-boot</library>
                             <apiPackage>com.factory.openapi.api</apiPackage>
@@ -115,10 +103,14 @@
                             <!--              https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/resources/JavaSpring/api.mustache-->
                             <templateDirectory>${project.basedir}/src/main/resources/template</templateDirectory>
                             <configOptions>
+                                <generatedConstructorWithRequiredArgs>
+                                    false
+                                </generatedConstructorWithRequiredArgs>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
+                                <useSpringBoot3>true</useSpringBoot3>
                                 <additionalModelTypeAnnotations>
                                     @lombok.Builder
-                                    @javax.validation.Valid
+                                    @jakarta.validation.Valid
                                     @lombok.NoArgsConstructor
                                     @lombok.AllArgsConstructor
                                 </additionalModelTypeAnnotations>
@@ -136,7 +128,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/reactive-api.yaml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/specs/reactive-api.yaml</inputSpec>
                             <generatorName>spring</generatorName>
                             <library>spring-boot</library>
                             <apiPackage>com.factory.openapi.api</apiPackage>
@@ -145,11 +137,15 @@
                             <!--              https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/resources/JavaSpring/api.mustache-->
                             <templateDirectory>${project.basedir}/src/main/resources/template</templateDirectory>
                             <configOptions>
+                                <generatedConstructorWithRequiredArgs>
+                                    false
+                                </generatedConstructorWithRequiredArgs>
+                                <useSpringBoot3>true</useSpringBoot3>
                                 <reactive>true</reactive>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
                                 <additionalModelTypeAnnotations>
                                     @lombok.Builder
-                                    @javax.validation.Valid
+                                    @jakarta.validation.Valid
                                     @lombok.NoArgsConstructor
                                     @lombok.AllArgsConstructor
                                 </additionalModelTypeAnnotations>

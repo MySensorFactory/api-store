@@ -144,7 +144,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
@@ -182,45 +181,6 @@ paths:
         '500':
           $ref: "commons.yaml#/components/responses/ServerError"
 
-  /reports/{sensorType}/{label}:
-    get:
-      operationId: getSingleReports
-      description: Pulls sensor data from given label and time window
-      tags:
-        - reports
-      parameters:
-        - name: from
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: to
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: label
-          in: path
-          schema:
-            type: string
-        - name: sensorType
-          in: path
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSingleReportResponse'
-        '403':
-          $ref: "commons.yaml#/components/responses/ClientError"
-        '500':
-          $ref: "commons.yaml#/components/responses/ServerError"
-
 components:
   schemas:
     Sorting:
@@ -241,10 +201,17 @@ components:
           type: string
         keywords:
           type: object
-          description: Keyword queries. Corresponding keyword queries are mapped to keyword names.
+          description: Keyword queries. Corresponding keyword values are mapped to keyword names.
           additionalProperties:
-            type: string
+            type: array
+            items:
+              type: string
+          example:
+            keywords:
+              "label": ["LabelA", "LabelB"]
+              "includedSensors": ["temperature", "pressure"]
         textFields:
+          description: Fields in report where testQuery is applied
           type: array
           items:
             type: string
@@ -278,9 +245,9 @@ components:
       properties:
         timeRange:
           $ref: 'commons.yaml#/components/schemas/TimeRange'
-        sensorLabels:
-          type: object
-          additionalProperties:
+        includedSensors:
+          type: array
+          items:
             type: string
         label:
           type: string
@@ -308,6 +275,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReportPreview'
+        totalItems:
+          type: integer
 
     GetSingleReportResponse:
       type: object
@@ -315,20 +284,9 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/SensorData'
+            $ref: '#/components/schemas/DetailedSensorData'
 
     ReportPreview:
-      type: object
-      properties:
-        timeRange:
-          $ref: 'commons.yaml#/components/schemas/TimeRange'
-        id:
-          type: string
-          format: uuid
-        label:
-          type: string
-
-    GetReportDetailsResponse:
       type: object
       properties:
         id:
@@ -336,37 +294,40 @@ components:
           format: uuid
         name:
           type: string
-        description:
+        includedSensors:
+          type: array
+          items:
+            type: string
+        label:
           type: string
         timeRange:
           $ref: 'commons.yaml#/components/schemas/TimeRange'
-        dataBySensorType:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/InstantData'
+
+    GetReportDetailsResponse:
+      allOf:
+        - $ref: '#/components/schemas/ReportPreview'
+        - properties:
+            description:
+              type: string
+            dataBySensorType:
+              type: object
+              additionalProperties:
+                $ref: '#/components/schemas/InstantData'
 
     InstantData:
-      type: object
-      properties:
-        dataByEventKey:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/SensorData'
+      type: array
+      items:
+        $ref: 'commons.yaml#/components/schemas/SensorData'
 
-    SensorData:
+    DetailedSensorData:
       type: object
-      properties:
-        timestamp:
-          type: integer
-          format: int64
-        label:
-          type: string
-        eventKey:
-          type: string
-          format: uuid
-        sensorType:
-          type: string
-        values:
-          type: object
-          additionalProperties:
-            type: number
+      allOf:
+        - $ref: 'commons.yaml#/components/schemas/SensorData'
+        - properties:
+            eventKey:
+              type: string
+              format: uuid
+            label:
+              type: string
+            sensorType:
+              type: string
