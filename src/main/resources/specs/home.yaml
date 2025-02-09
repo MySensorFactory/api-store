@@ -3,16 +3,15 @@ info:
   title: Factory Data Analytics API
   version: 1.0.0
 paths:
-  /home/dashboard-config/{id}:
+  /home/dashboard-config/{userName}:
     get:
       summary: Get dashboard configuration
       operationId: getDashboardConfig
       parameters:
         - in: path
-          name: id
+          name: userName
           schema:
             type: string
-            format: uuid
       tags:
         - home
       responses:
@@ -27,10 +26,9 @@ paths:
       operationId: updateDashboardConfig
       parameters:
         - in: path
-          name: id
+          name: userName
           schema:
             type: string
-            format: uuid
       tags:
         - home
       requestBody:
@@ -82,16 +80,15 @@ paths:
                 items:
                   $ref: '#/components/schemas/Event'
 
-  /home/sensor-values/{dashboardConfigId}:
+  /home/sensor-values/{userName}:
     get:
       summary: Get current sensor values
       operationId: getHomeSensorValues
       parameters:
         - in: path
-          name: dashboardConfigId
+          name: userName
           schema:
             type: string
-            format: uuid
       tags:
         - home
       responses:
@@ -104,16 +101,15 @@ paths:
                 items:
                   $ref: '#/components/schemas/SensorValue'
 
-  /home/average-sensor-values/{dashboardConfigId}:
+  /home/average-sensor-values/{userName}:
     get:
       summary: Get average sensor values
       operationId: getHomeAverageSensorValues
       parameters:
         - in: path
-          name: dashboardConfigId
+          name: userName
           schema:
             type: string
-            format: uuid
       tags:
         - home
       responses:
@@ -134,9 +130,11 @@ paths:
         - home
       parameters:
         - in: query
-          name: sensorType
+          name: chartConfigIds
           schema:
-            type: string
+            type: array
+            items:
+              type: string
           required: true
         - in: query
           name: timeRange
@@ -149,18 +147,18 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ChartDataPoint'
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: 'commons.yaml#/components/schemas/SensorData'
 
 components:
   schemas:
     DashboardConfig:
       type: object
       properties:
-        id:
+        userName:
           type: string
-          format: uuid
         currentSensorValuesConfig:
           type: array
           items:
@@ -179,38 +177,16 @@ components:
       properties:
         title:
           type: string
-        time:
-          type: string
-          format: date-time
+        timestamp:
+          type: integer
+          format: int64
         isAlert:
           type: boolean
 
     SensorValue:
       allOf:
         - $ref: '#/components/schemas/ValueConfig'
-      type: object
-      properties:
-        value:
-          type: string
-
-    ChartDataPoint:
-      type: object
-      properties:
-        time:
-          type: number
-        value:
-          type: number
-
-    ChartConfig:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        label:
-          type: string
-        sensorType:
-          type: string
+        - $ref: 'commons.yaml#/components/schemas/SensorData'
 
     ValueConfig:
       type: object
@@ -222,3 +198,8 @@ components:
           type: string
         sensorType:
           type: string
+
+    ChartConfig:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ValueConfig'
