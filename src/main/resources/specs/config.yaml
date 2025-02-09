@@ -1,0 +1,74 @@
+openapi: 3.0.3
+info:
+  title: Config API
+  description: API which allows to get access to cluster configuration
+  version: 1.0.0
+
+paths:
+  /config:
+    get:
+      summary: Creates report with given time window and other parameters
+      operationId: getConfiguration
+      tags:
+        - config
+      responses:
+        '200':
+          description: Successfully created report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Config'
+        '403':
+          $ref: "commons.yaml#/components/responses/ClientError"
+        '500':
+          $ref: "commons.yaml#/components/responses/ServerError"
+
+
+components:
+  schemas:
+    Config:
+      type: object
+      properties:
+        availableSensors:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabeledValue'
+        availableLabels:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabeledValue'
+        sortOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabeledValue'
+        timeRangeOptions:
+          type: array
+          items:
+            type: object
+            properties:
+              value:
+                type: string
+              label:
+                type: string
+              daysCount:
+                type: integer
+        unitMapping:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: string
+        wideSensors:
+          type: array
+          items:
+            type: string
+
+    LabeledValue:
+      type: object
+      properties:
+        value:
+          type: string
+          description: String value which is sent via REST API
+        label:
+          type: string
+          description: String value which is shown on frontend side
